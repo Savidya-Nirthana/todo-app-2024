@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   });
   
 
-export default function TodoItem({ task, deleteTask, toggleCompleted }) {
+export default function TodoItem({ task, deleteTask, toggleCompleted, priority }) {
     return (
         <View style={styles.todoItem}>
         <View style={styles.checkboxContainer}>
@@ -66,5 +66,8 @@ export default function TodoItem({ task, deleteTask, toggleCompleted }) {
           <Text style={styles.deleteButtonText}>Delete</Text>
         </TouchableOpacity>
       </View>
+
+      
     );
+
   }

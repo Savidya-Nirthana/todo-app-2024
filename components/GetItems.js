@@ -1,7 +1,13 @@
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
-import Checkbox, { CheckBox } from "expo-checkbox";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+import Checkbox from "expo-checkbox";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { styled } from "nativewind";
 
 const StyledTextInput = styled(TextInput);
@@ -14,6 +20,47 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
   const [urgent, setUrgent] = useState(false);
+
+  const translateYAnim = useRef(new Animated.Value(300)).current;
+  const opacityAnim = useRef(new Animated.Value(0)).current;
+
+  const swipeUpAndFadeIn = () => {
+    Animated.parallel([
+      Animated.timing(translateYAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const swipeDownAndFadeOut = () => {
+    Animated.parallel([
+      Animated.timing(translateYAnim, {
+        toValue: 300,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setValue(false);
+    });
+  };
+
+  useEffect(() => {
+    if (value) {
+      swipeUpAndFadeIn();
+    }
+  }, [value]);
 
   const addTask = () => {
     const newTask = {
@@ -30,7 +77,7 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
 
     setTasks([...tasks, newTask]);
     setTitle("");
-    setDescription(""); 
+    setDescription("");
     setValue(false);
   };
 
@@ -69,15 +116,19 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
     setTime(currentTime);
   };
   return (
-    <View className=" bg-[#230f5b] z-10 rounded-3xl px-[20px] absolute bottom-0 w-[100%]">
-      <View className="absolute -right-5 -top-5">
+    <Animated.View
+      style={{
+        transform: [{ translateY: translateYAnim }],
+        opacity: opacityAnim,
+      }}
+      className=" bg-[#230f5b] z-10 rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
+    >
+      <View className="absolute right-5 -top-5">
         <TouchableOpacity
-          className=" bg-[#2a2b2a]  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center"
-          onPress={() => {
-            setValue(false);
-          }}
+          className=" bg-[#230f5b]  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
+          onPress={swipeDownAndFadeOut}
         >
-          <Text className="text-white text-[20px]  ">X</Text>
+          <Text className="text-white text-[20px]">X</Text>
         </TouchableOpacity>
       </View>
       <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View>
@@ -85,7 +136,6 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
         New Task To Do
       </Text>
       <View>
-        {/* <Text className="text-white ">Title Task</Text> */}
         <StyledTextInput
           placeholder="Title Task"
           className="bg-[#2b2766] p-1 rounded-md mb-[20px] placeholder:text-white"
@@ -97,7 +147,6 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
         />
       </View>
       <View>
-        {/* <Text className="text-white ">Description</Text> */}
         <StyledTextInput
           multiline={true}
           placeholder="Add description"
@@ -166,13 +215,13 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
       </View>
       <View>
         <TouchableOpacity
-          className=" bg-white mb-[20px] rounded-lg"
+          className=" bg-[#f2f2f2] mb-[20px] rounded-lg"
           onPress={addTask}
         >
           <Text className="text-center py-[10px] px-[20px]">ADD</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

@@ -1,19 +1,6 @@
 import react, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-
-// const styles = StyleSheet.create({
-//   container: {
-//     marginTop: 50,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     textAlign: "center",
-//     height: 3,
-//     backgroundColor: "green",
-//     flex: 1,
-//   },
-// });
-
 const DateTime = () => {
   const [currentDateTime, setCurrentDateTime] = useState([]);
   useEffect(() => {

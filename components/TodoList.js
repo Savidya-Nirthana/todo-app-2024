@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, Animated } from "react-native";
+
 import TodoItem from "./TodoItem";
 import GetItems from "./GetItems";
 import TaskData from "./TaskData";
@@ -17,16 +12,10 @@ export default function TodoList() {
   const [text, setText] = useState("");
   const [taskFilter, setTaskFilter] = useState("a");
 
-  // function addTask() {
-  //   const newTask = { id: Date.now(), text, completed: false };
-  //   setTasks([...tasks, newTask]);
-  //   setText("");
-  // }
-  // Function to Delete Task
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
-  // Function to Toggle Task Completion
+
   function toggleCompleted(id) {
     setTasks(
       tasks.map((task) =>
@@ -34,7 +23,7 @@ export default function TodoList() {
       )
     );
   }
-  // Render TodoList Component
+
   return (
     <>
       <View className="p-5 bg-[#f2f2f2] z-10 relative -top-[85%] h-full rounded-3xl">
