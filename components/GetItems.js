@@ -19,7 +19,17 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
   const [time, setTime] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
-  const [urgent, setUrgent] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectPriority, setSelectPriority] = useState(0);
+
+  const categoryList = [
+    "Work",
+    "Education",
+    "Family",
+    "Entertainment",
+    "Cooking",
+    "Friends",
+  ];
 
   const translateYAnim = useRef(new Animated.Value(300)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -69,7 +79,8 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
       description: description,
       date: date,
       time: time,
-      priority: urgent,
+      priority: selectPriority,
+      category: selectedCategory,
       completed: false,
     };
 
@@ -149,9 +160,9 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
       <View>
         <StyledTextInput
           multiline={true}
-          placeholder="Add description"
+          placeholder="Enter task details or any specific notes"
           numberOfLines={5}
-          className="bg-[#2b2766]  rounded-md mb-[20px] p-2"
+          className="bg-[#2b2766]  rounded-md mb-[20px] p-2 placeholder:text-white"
           placeholderTextColor="#9CA3AF"
           style={{ textAlignVertical: "top" }}
           onChangeText={(data) => {
@@ -159,7 +170,27 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
           }}
         />
       </View>
-      <View className="flex flex-row gap-5 ">
+      <View className="border-b-[0.5px] border-[#ffffff] mb-[20px]">
+        <Text className="text-white text-[20px] font-bold">Category</Text>
+        <View className="flex flex-row flex-wrap">
+          {categoryList.map((cat, index) => (
+            <TouchableOpacity
+              key={index}
+              className={`m-[10px] p-[10px] rounded-lg ${
+                selectedCategory === cat ? "bg-blue-500" : "bg-slate-500"
+              }`}
+              activeOpacity={0.7}
+              onPress={() => {
+                setSelectedCategory(cat);
+              }}
+            >
+              <Text className="text-white">{cat}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      <View className="flex flex-row gap-5 mb-[20px]">
         <View>
           <TouchableOpacity
             className=" bg-[#522c9d] rounded-lg"
@@ -205,20 +236,49 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
         </View>
       </View>
 
-      <View className=" flex flex-row gap-[15px] mb-[15px]">
-        <Text className=" text-[#d1d0d2] ">Is it urgent:</Text>
-        <Checkbox
-          value={urgent}
-          onValueChange={toggleComplete}
-          tintColors={{ true: "#7f25c8", false: "#7f25c8" }}
-        />
+      <View className="border-t-[0.5px] border-[#ffffff] py-[20px]">
+        <Text className=" text-white text-[20px] font-bold">Priority</Text>
+        <View className="flex flex-row justify-around">
+          <TouchableOpacity
+            className={`m-[10px] p-[10px] rounded-lg bg-[#4CAF50]`}
+            onPress={() => {
+              setSelectPriority(0);
+            }}
+          >
+            <Text className="text-white ">Low</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="m-[10px] p-[10px] rounded-lg bg-[#FFC107] "
+            onPress={() => {
+              setSelectPriority(1);
+            }}
+          >
+            <Text className="text-white">Medium</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="m-[10px] p-[10px] rounded-lg bg-[#F44336] "
+            onPress={() => {
+              setSelectPriority(2);
+            }}
+          >
+            <Text className="text-white">High</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View>
+      <View className="flex items-center justify-center align-baseline mb-[10px]">
         <TouchableOpacity
-          className=" bg-[#f2f2f2] mb-[20px] rounded-lg"
+          className={`bg-[#f2f2f2] w-[60px] h-[60px] flex align-baseline justify-center items-center rounded-full ${
+            selectPriority === 0
+              ? "bg-[#4CAF50] text-white font-bold"
+              : selectPriority === 1
+              ? "bg-[#FFC107] text-white font-bold"
+              : selectPriority === 2
+              ? "bg-[#F44336] text-white font-bold"
+              : "bg-[#f2f2f2]"
+          }`}
           onPress={addTask}
         >
-          <Text className="text-center py-[10px] px-[20px]">ADD</Text>
+          <Text className="text-[40px] text-white">+</Text>
         </TouchableOpacity>
       </View>
     </Animated.View>

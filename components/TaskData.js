@@ -7,6 +7,7 @@ const TaskData = () => {
       date: "",
       time: "",
       priority: "",
+      category: "",
       completed: true,
     },
     {
@@ -16,6 +17,7 @@ const TaskData = () => {
       date: "",
       time: "",
       priority: "",
+      category: "",
       completed: false,
     },
   ];

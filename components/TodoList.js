@@ -9,13 +9,10 @@ import TaskData from "./TaskData";
 export default function TodoList() {
   const [showAdd, setShowAdd] = useState(false);
   const [tasks, setTasks] = useState(TaskData());
-  const [text, setText] = useState("");
   const [taskFilter, setTaskFilter] = useState("a");
-
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
-
   function toggleCompleted(id) {
     setTasks(
       tasks.map((task) =>
