@@ -1,17 +1,39 @@
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import Checkbox, { CheckBox } from "expo-checkbox";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "nativewind";
 
 const StyledTextInput = styled(TextInput);
 
-const GetItems = ({ value, setValue }) => {
+const GetItems = ({ value, setValue, tasks, setTasks }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
   const [urgent, setUrgent] = useState(false);
+
+  const addTask = () => {
+    const newTask = {
+      id: Date.now(),
+      text: title,
+      description: description,
+      date: date,
+      time: time,
+      priority: urgent,
+      completed: false,
+    };
+
+    console.log(newTask);
+
+    setTasks([...tasks, newTask]);
+    setTitle("");
+    setDescription("");
+    setValue(false);
+  };
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDate(false);
@@ -47,8 +69,8 @@ const GetItems = ({ value, setValue }) => {
     setTime(currentTime);
   };
   return (
-    <View className=" bg-[#230f5b] z-10 rounded-3xl px-[20px]  relative w-[100%]  bottom-0">
-      <View className=" absolute -right-5 -top-5">
+    <View className=" bg-[#230f5b] z-10 rounded-3xl px-[20px] absolute bottom-0 w-[100%]">
+      <View className="absolute -right-5 -top-5">
         <TouchableOpacity
           className=" bg-[#2a2b2a]  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center"
           onPress={() => {
@@ -63,16 +85,19 @@ const GetItems = ({ value, setValue }) => {
         New Task To Do
       </Text>
       <View>
-        {/* <Text className=" text-white">Title Task</Text> */}
+        {/* <Text className="text-white ">Title Task</Text> */}
         <StyledTextInput
           placeholder="Title Task"
           className="bg-[#2b2766] p-1 rounded-md mb-[20px] placeholder:text-white"
           placeholderTextColor="#9CA3AF"
           style={{ textAlignVertical: "top" }}
+          onChangeText={(data) => {
+            setTitle(data);
+          }}
         />
       </View>
       <View>
-        {/* <Text className=" text-white">Description</Text> */}
+        {/* <Text className="text-white ">Description</Text> */}
         <StyledTextInput
           multiline={true}
           placeholder="Add description"
@@ -80,9 +105,12 @@ const GetItems = ({ value, setValue }) => {
           className="bg-[#2b2766]  rounded-md mb-[20px] p-2"
           placeholderTextColor="#9CA3AF"
           style={{ textAlignVertical: "top" }}
+          onChangeText={(data) => {
+            setDescription(data);
+          }}
         />
       </View>
-      <View className=" flex flex-row gap-5">
+      <View className="flex flex-row gap-5 ">
         <View>
           <TouchableOpacity
             className=" bg-[#522c9d] rounded-lg"
@@ -137,7 +165,10 @@ const GetItems = ({ value, setValue }) => {
         />
       </View>
       <View>
-        <TouchableOpacity className=" bg-white mb-[20px] rounded-lg">
+        <TouchableOpacity
+          className=" bg-white mb-[20px] rounded-lg"
+          onPress={addTask}
+        >
           <Text className="text-center py-[10px] px-[20px]">ADD</Text>
         </TouchableOpacity>
       </View>
