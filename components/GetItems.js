@@ -30,7 +30,7 @@ const GetItems = ({ value, setValue, tasks, setTasks }) => {
 
     setTasks([...tasks, newTask]);
     setTitle("");
-    setDescription("");
+    setDescription(""); 
     setValue(false);
   };
 
