@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox';
 const styles = StyleSheet.create({
     todoItem: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       paddingVertical: 10,
       paddingHorizontal: 15,
@@ -21,17 +21,40 @@ const styles = StyleSheet.create({
       shadowRadius: 2,
       elevation: 2,
     },
+       
     checkboxContainer: {
       marginRight: 10,
     },
+    contentContainer:{
+      flex:1,
+    },
     todoItemText: {
-      flex: 1,
+     // flex: 1,
       fontSize: 16,
       color: '#333',
     },
     completed: {
       textDecorationLine: 'line-through',
       color: '#999',
+      
+    },
+    buttonContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent:'center',
+      
+    },
+    editButton: {
+      backgroundColor: '#00BFFF',
+      paddingVertical: 3,
+      paddingHorizontal: 10,
+      borderRadius: 5,
+      marginRight: 5,
+      marginBottom:5,
+    },
+    editButtonText: {
+      color: '#fff',
+      fontSize: 14,
     },
     deleteButton: {
       backgroundColor: '#FF6347',
@@ -43,11 +66,25 @@ const styles = StyleSheet.create({
       color: '#fff',
       fontSize: 14,
     },
+    // New style for date and time
+    dateText: {
+    fontSize: 12,  // Smaller font size for date and time
+    color: '#888',  // Lighter color for date and time
+    marginTop: 3,
+  },
+  categoryText: {
+    fontSize: 12, // Smaller font size for category
+    color: '#888', // Lighter color for category
+  },
   });
   
 
-export default function TodoItem({ task, deleteTask, toggleCompleted, priority }) {
+export default function TodoItem({ task, deleteTask,editTask, toggleCompleted, priority }) {
+  const taskDate = "2024-09-16";
+  const taskTime = "10:30 AM";
+  const taskCategory = "Personal"; // Example category
     return (
+     
         <View style={styles.todoItem}>
         <View style={styles.checkboxContainer}>
           <Checkbox
@@ -56,15 +93,31 @@ export default function TodoItem({ task, deleteTask, toggleCompleted, priority }
             tintColors={{ true: '#4CAF50', false: '#ccc' }} // Green when checked
           />
         </View>
+         {/* Content containing task name and date/time */}
+      <View style={{ flex: 1 }}>
+        {/* Task Text */}
         <Text style={[styles.todoItemText, task.completed && styles.completed]}>
           {task.text}
         </Text>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => deleteTask(task.id)}
-        >
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
+        {/* Decorative Date and Time (smaller and lighter) */}
+        <Text style={styles.dateText}>
+          {taskDate} at {taskTime}
+        </Text>
+        <Text style={styles.categoryText}>
+            {taskCategory}
+          </Text>
+      </View>
+      <View style={styles.buttonContainer}>
+      {/* Decorative Edit Button */}
+      <TouchableOpacity style={styles.editButton}>
+        <Text style={styles.editButtonText}>Edit</Text>
+      </TouchableOpacity>
+
+      {/* Functional Delete Button */}
+      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteTask(task.id)}>
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </TouchableOpacity>
+      </View> 
       </View>
 
       
