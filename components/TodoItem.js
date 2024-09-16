@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
       alignItems: 'flex-start',
       justifyContent: 'space-between',
       paddingVertical: 10,
-      paddingHorizontal: 15,
+      paddingLeft: 5,
+      paddingHorizontal: 12,
       marginVertical: 5,
       backgroundColor: '#f9f9f9',
       borderRadius: 8,
@@ -21,7 +22,16 @@ const styles = StyleSheet.create({
       shadowRadius: 2,
       elevation: 2,
     },
-       
+    priorityLine: {
+      width: 13, // Width of the priority line
+      height: '100%',
+      backgroundColor: 'pink', // Pink color for decoration
+      marginRight: 10,
+      marginLeft: 1, // Space between line and checkbox
+      borderBottomLeftRadius: 10,
+     // borderTopLeftRadius: 15,
+
+    },  
     checkboxContainer: {
       marginRight: 10,
     },
@@ -40,8 +50,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent:'center',
+      alignItems: 'left',
+      justifyContent:'left',
       
     },
     editButton: {
@@ -49,12 +59,14 @@ const styles = StyleSheet.create({
       paddingVertical: 3,
       paddingHorizontal: 10,
       borderRadius: 5,
-      marginRight: 5,
+      marginRight: 1,
       marginBottom:5,
     },
     editButtonText: {
       color: '#fff',
-      fontSize: 14,
+      fontSize: 13,
+      paddingHorizontal: 5,
+      paddingVertical: 3,
     },
     deleteButton: {
       backgroundColor: '#FF6347',
@@ -64,7 +76,7 @@ const styles = StyleSheet.create({
     },
     deleteButtonText: {
       color: '#fff',
-      fontSize: 14,
+      fontSize: 12,
     },
     // New style for date and time
     dateText: {
@@ -86,6 +98,7 @@ export default function TodoItem({ task, deleteTask,editTask, toggleCompleted, p
     return (
      
         <View style={styles.todoItem}>
+       <View style={styles.priorityLine}></View>
         <View style={styles.checkboxContainer}>
           <Checkbox
             value={task.completed}
