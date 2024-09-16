@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { View, Text, TouchableOpacity, Animated } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Animated,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+} from "react-native";
 
 import TodoItem from "./TodoItem";
 import GetItems from "./GetItems";
@@ -10,9 +18,23 @@ export default function TodoList() {
   const [showAdd, setShowAdd] = useState(false);
   const [tasks, setTasks] = useState(TaskData());
   const [taskFilter, setTaskFilter] = useState("a");
+  const [eTask, setETask] = useState(null);
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
+
+  function editTask(id) {
+    const selectedTask = tasks.filter((task) => task.id === id)[0];
+    setETask(selectedTask);
+    setShowAdd(true);
+  }
+
+  useEffect(() => {
+    if (eTask) {
+      // console.log("Edited Task: ", eTask);
+    }
+  }, [eTask]);
+
   function toggleCompleted(id) {
     setTasks(
       tasks.map((task) =>
@@ -73,6 +95,7 @@ export default function TodoList() {
                 task={task}
                 deleteTask={deleteTask}
                 toggleCompleted={toggleCompleted}
+                editTask={editTask}
               />
             ))
           : taskFilter === "u"
@@ -84,6 +107,7 @@ export default function TodoList() {
                   task={task}
                   deleteTask={deleteTask}
                   toggleCompleted={toggleCompleted}
+                  editTask={editTask}
                 />
               ))
           : tasks
@@ -94,6 +118,7 @@ export default function TodoList() {
                   task={task}
                   deleteTask={deleteTask}
                   toggleCompleted={toggleCompleted}
+                  editTask={editTask}
                 />
               ))}
 
@@ -116,6 +141,9 @@ export default function TodoList() {
           setValue={setShowAdd}
           tasks={tasks}
           setTasks={setTasks}
+          eTask={eTask}
+          setETask={setETask}
+          deleteTask={deleteTask}
         />
       )}
     </>

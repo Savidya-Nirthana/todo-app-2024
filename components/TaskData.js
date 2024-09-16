@@ -3,11 +3,11 @@ const TaskData = () => {
     {
       id: 1,
       text: "Doctor Appointment",
-      description: "",
+      description: "dfknsdfknf sdfkldsjfd dfkldsnf",
       date: "",
       time: "",
-      priority: "",
-      category: "",
+      priority: 2,
+      category: "Work",
       completed: true,
     },
     {
@@ -16,8 +16,8 @@ const TaskData = () => {
       description: "",
       date: "",
       time: "",
-      priority: "",
-      category: "",
+      priority: 2,
+      category: "Education",
       completed: false,
     },
   ];
