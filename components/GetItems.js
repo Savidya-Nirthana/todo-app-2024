@@ -163,7 +163,7 @@ const GetItems = ({
         transform: [{ translateY: translateYAnim }],
         opacity: opacityAnim,
       }}
-      className=" bg-[#230f5b]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
+      className=" bg-[#aeb5cd]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
     >
       <View className="absolute z-10 right-5 -top-5">
         <TouchableOpacity
@@ -179,15 +179,15 @@ const GetItems = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView>
-            <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View>
-            <Text className=" text-[#cdcdcd] text-center my-[10px] text-[20px] font-bold">
+            <View className=" w-[70px] h-[2px] bg-[#bbbbb] m-auto mt-2 -mb-2"></View>
+            <Text className=" text-[#ffffff] text-center my-[10px] text-[20px] font-bold">
               New Task To Do
             </Text>
             <View>
               <StyledTextInput
                 placeholder="Title Task"
-                className="bg-[#2b2766] p-1 rounded-md mb-[20px] placeholder:text-white"
-                placeholderTextColor="#9CA3AF"
+                className="bg-[#8ba4f9] p-1 rounded-md mb-[20px] placeholder:text-white"
+                placeholderTextColor="#000000"
                 style={{ textAlignVertical: "top" }}
                 value={eTask ? eTask.text : null}
                 onChangeText={(data) => {
@@ -201,8 +201,8 @@ const GetItems = ({
                 multiline={true}
                 placeholder="Enter task details or any specific notes"
                 numberOfLines={5}
-                className="bg-[#2b2766]  rounded-md mb-[20px] p-2 placeholder:text-white"
-                placeholderTextColor="#9CA3AF"
+                className="bg-[#8ba4f9]  rounded-md mb-[20px] p-2 placeholder:text-white"
+                placeholderTextColor="#000000"
                 value={eTask ? eTask.description : null}
                 style={{ textAlignVertical: "top" }}
                 onChangeText={(data) => {
@@ -259,7 +259,7 @@ const GetItems = ({
 
               <View>
                 <TouchableOpacity
-                  className=" bg-[#1c1c1c] rounded-lg"
+                  className=" bg-[#522c9d] rounded-lg"
                   onPress={() => {
                     setShowTime(true);
                   }}
