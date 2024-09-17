@@ -43,9 +43,16 @@ export default function TodoList() {
     );
   }
 
+  const filterTasks =
+    taskFilter === "a"
+      ? tasks
+      : taskFilter === "u"
+      ? tasks.filter((task) => !task.completed)
+      : tasks.filter((task) => task.completed);
+
   return (
     <>
-      <View className="p-5 bg-[#f2f2f2] z-10 relative -top-[85%] h-full rounded-3xl">
+      <View className=" p-5 bg-[#f2f2f2] z-10 relative -top-[85%] h-[85%] rounded-3xl">
         <View className="w-[100%]">
           <View className="w-[50px] h-[3px]  bg-[#f2f2f2] relative top-[-30px] m-auto rounded-lg"></View>
         </View>
@@ -88,39 +95,17 @@ export default function TodoList() {
             Done
           </Text>
         </View>
-        {taskFilter === "a"
-          ? tasks.map((task) => (
-              <TodoItem
-                key={task.id}
-                task={task}
-                deleteTask={deleteTask}
-                toggleCompleted={toggleCompleted}
-                editTask={editTask}
-              />
-            ))
-          : taskFilter === "u"
-          ? tasks
-              .filter((task) => !task.completed)
-              .map((task) => (
-                <TodoItem
-                  key={task.id}
-                  task={task}
-                  deleteTask={deleteTask}
-                  toggleCompleted={toggleCompleted}
-                  editTask={editTask}
-                />
-              ))
-          : tasks
-              .filter((task) => task.completed)
-              .map((task) => (
-                <TodoItem
-                  key={task.id}
-                  task={task}
-                  deleteTask={deleteTask}
-                  toggleCompleted={toggleCompleted}
-                  editTask={editTask}
-                />
-              ))}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {filterTasks.map((task) => (
+            <TodoItem
+              key={task.id}
+              task={task}
+              deleteTask={deleteTask}
+              toggleCompleted={toggleCompleted}
+              editTask={editTask}
+            />
+          ))}
+        </ScrollView>
 
         {!showAdd && (
           <View className=" absolute top-[75%] left-[80%] z-100">
