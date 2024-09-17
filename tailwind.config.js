@@ -6,6 +6,7 @@ module.exports = {
     "./components/Hellow.{js,jsx,ts,tsx}",
     "./components/DateTime.{js,jsx,ts,tsx}",
     "./components/TodoList.{js,jsx,ts,tsx}",
+    "./components/TodoItem.{js,jsx,ts,tsx}",
     "./components/GetItems.{js,jsx,ts,tsx}",
   ],
   theme: {
