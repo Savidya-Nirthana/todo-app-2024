@@ -39,7 +39,7 @@ const DateTime = () => {
   };
 
   return (
-    <View className={` bg-[#2a2b2a] h-[100%] z-[-1] pt-[35px] pl-[20px]`}>
+    <View className={` bg-[#151515] h-[100%] z-[-1] pt-[35px] pl-[20px]`}>
       <View className="">
         <Text className={`text-white text-[25px]`}>
           {currentHour(new Date().getHours())}

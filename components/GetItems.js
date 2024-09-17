@@ -163,11 +163,11 @@ const GetItems = ({
         transform: [{ translateY: translateYAnim }],
         opacity: opacityAnim,
       }}
-      className=" bg-[#230f5b]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
+      className=" bg-[#181818]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
     >
       <View className="absolute z-10 right-5 -top-5">
         <TouchableOpacity
-          className=" bg-[#230f5b]  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
+          className=" bg-slate-800  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
           onPress={swipeDownAndFadeOut}
         >
           <Text className="text-white text-[20px]">X</Text>
@@ -179,14 +179,14 @@ const GetItems = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView>
-            <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View>
+            {/* <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View> */}
             <Text className=" text-[#cdcdcd] text-center my-[10px] text-[20px] font-bold">
               New Task To Do
             </Text>
             <View>
               <StyledTextInput
                 placeholder="Title Task"
-                className="bg-[#2b2766] p-1 rounded-md mb-[20px] placeholder:text-white"
+                className="bg-[#2c2c2c] p-1 rounded-md mb-[20px] placeholder:text-white"
                 placeholderTextColor="#9CA3AF"
                 style={{ textAlignVertical: "top" }}
                 value={eTask ? eTask.text : null}
@@ -201,7 +201,7 @@ const GetItems = ({
                 multiline={true}
                 placeholder="Enter task details or any specific notes"
                 numberOfLines={5}
-                className="bg-[#2b2766]  rounded-md mb-[20px] p-2 placeholder:text-white"
+                className="bg-[#2c2c2c]  rounded-md mb-[20px] p-2 placeholder:text-white"
                 placeholderTextColor="#9CA3AF"
                 value={eTask ? eTask.description : null}
                 style={{ textAlignVertical: "top" }}
@@ -211,14 +211,16 @@ const GetItems = ({
                 }}
               />
             </View>
-            <View className="border-b-[0.5px] border-[#ffffff] mb-[20px]">
-              <Text className="text-white text-[20px] font-bold">Category</Text>
+            <View className="border-b-[0.5px] border-[#525252] mb-[20px]">
+              <Text className="text-[#cdcdcd] text-[20px] font-bold">
+                Category
+              </Text>
               <View className="flex flex-row flex-wrap">
                 {categoryList.map((cat, index) => (
                   <TouchableOpacity
                     key={index}
                     className={`m-[10px] p-[10px] rounded-lg ${
-                      selectedCategory === cat ? "bg-blue-500" : "bg-slate-500"
+                      selectedCategory === cat ? "bg-slate-500" : "bg-[#2c2c2c]"
                     }`}
                     activeOpacity={0.7}
                     onPress={() => {
@@ -234,7 +236,7 @@ const GetItems = ({
             <View className="flex flex-row gap-5 mb-[20px]">
               <View>
                 <TouchableOpacity
-                  className=" bg-[#522c9d] rounded-lg"
+                  className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
                   onPress={() => {
                     setShowDate(true);
                   }}
@@ -259,7 +261,7 @@ const GetItems = ({
 
               <View>
                 <TouchableOpacity
-                  className=" bg-[#1c1c1c] rounded-lg"
+                  className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
                   onPress={() => {
                     setShowTime(true);
                   }}
@@ -281,13 +283,13 @@ const GetItems = ({
               </View>
             </View>
             {/* {eTask ? setSelectPriority(eTask.priority) : setSelectPriority(0)} */}
-            <View className="border-t-[0.5px] border-[#ffffff] py-[20px]">
-              <Text className=" text-white text-[20px] font-bold">
+            <View className="border-t-[0.5px] border-[#525252] py-[20px]">
+              <Text className=" text-[#cdcdcd] text-[20px] font-bold">
                 Priority
               </Text>
               <View className="flex flex-row justify-around">
                 <TouchableOpacity
-                  className={`m-[10px] p-[10px] rounded-lg bg-[#4CAF50]`}
+                  className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#4CAF50]`}
                   onPress={() => {
                     setSelectPriority(0);
                   }}
@@ -295,7 +297,7 @@ const GetItems = ({
                   <Text className="text-white ">Low</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg bg-[#FFC107] "
+                  className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#FFC107] "
                   onPress={() => {
                     setSelectPriority(1);
                   }}
@@ -303,7 +305,7 @@ const GetItems = ({
                   <Text className="text-white">Medium</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg bg-[#F44336] "
+                  className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#F44336] "
                   onPress={() => {
                     setSelectPriority(2);
                   }}

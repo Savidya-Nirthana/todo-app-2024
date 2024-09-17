@@ -1,4 +1,4 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingHorizontal: 12,
     marginVertical: 5,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#181818",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ddd",
-    shadowColor: "#000",
+    borderColor: "#181818",
+    // shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   todoItemText: {
     // flex: 1,
     fontSize: 16,
-    color: "#333",
+    color: "#ffffff",
   },
   completed: {
     textDecorationLine: "line-through",
@@ -58,38 +58,38 @@ const styles = StyleSheet.create({
     alignItems: "left",
     justifyContent: "left",
   },
-  editButton: {
-    backgroundColor: "#00BFFF",
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    marginRight: 1,
-    marginBottom: 5,
-  },
-  editButtonText: {
-    color: "#fff",
-    fontSize: 13,
-    paddingHorizontal: 5,
-    paddingVertical: 3,
-  },
-  deleteButton: {
-    backgroundColor: "#FF6347",
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  deleteButtonText: {
-    color: "#fff",
-    fontSize: 12,
-  },
+  // editButton: {
+  //   backgroundColor: "#00BFFF",
+  //   paddingVertical: 3,
+  //   paddingHorizontal: 10,
+  //   borderRadius: 5,
+  //   marginRight: 1,
+  //   marginBottom: 5,
+  // },
+  // // editButtonText: {
+  // //   color: "#fff",
+  // //   fontSize: 13,
+  // //   paddingHorizontal: 5,
+  // //   paddingVertical: 3,
+  // // },
+  // deleteButton: {
+  //   backgroundColor: "#FF6347",
+  //   paddingVertical: 6,
+  //   paddingHorizontal: 10,
+  //   borderRadius: 5,
+  // },
+  // deleteButtonText: {
+  //   color: "#fff",
+  //   fontSize: 12,
+  // },
   // New style for date and time
   dateText: {
-    fontSize: 12, 
-    color: "#888", 
+    fontSize: 12,
+    color: "#888",
     marginTop: 3,
   },
   categoryText: {
-    fontSize: 12, 
+    fontSize: 12,
     color: "#888", // Lighter color for category
   },
 });
@@ -113,9 +113,9 @@ export default function TodoItem({
   const animation = useRef(new Animated.Value(0)).current;
   const toggleDescription = () => {
     Animated.timing(animation, {
-      toValue: showDescription ? 0 : 1, 
-      duration: 300, 
-      useNativeDriver: false, 
+      toValue: showDescription ? 0 : 1,
+      duration: 300,
+      useNativeDriver: false,
     }).start();
 
     setShowDescription(!showDescription);
@@ -126,20 +126,11 @@ export default function TodoItem({
     outputRange: [0, 100],
   });
 
-  const iconColor =
-    task.priority === 0
-      ? "#4CAF50"
-      : task.priority === 1
-      ? "#FFC107"
-      : task.priority === 2
-      ? "#F44336"
-      : "#f2f2f2";
-
   return (
     <View style={styles.todoItemContainer}>
       <View style={styles.todoItem}>
         <View
-          style={styles.priorityLine}
+          // style={styles.priorityLine}
           className={`${
             task.priority === 0
               ? "bg-[#4CAF50]"
@@ -171,21 +162,34 @@ export default function TodoItem({
           </Text>
           <Text style={styles.categoryText}>{task.category}</Text>
         </View>
-        <View style={styles.buttonContainer}>
+        <View className="flex flex-row gap-[20px] items-center justify-center align-baseline h-[100%] pt-[2px]">
           {/* Decorative Edit Button */}
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => editTask(task.id)}
           >
-            <Text style={styles.editButtonText}>Edit</Text>
+            <FontAwesome
+              name="pencil-square-o"
+              color="#b6b6b6"
+              size={30}
+              style={styles.editButtonText}
+              className=" bg-[#0d0d43] text-blue-500 text-center py-[3px] rounded-[5px] mb-[10px] "
+            ></FontAwesome>
           </TouchableOpacity>
 
           {/* Functional Delete Button */}
           <TouchableOpacity
             style={styles.deleteButton}
+            // className=" bg-[#431c0d] py-[3px] px-[10px] rounded-[5px]"
             onPress={() => deleteTask(task.id)}
           >
-            <Text style={styles.deleteButtonText}>Delete</Text>
+            <FontAwesome
+              name="trash"
+              color="#b6b6b6"
+              size={30}
+              // style={styles.deleteButtonText}
+              className=" bg-[#431c0d] text-orange-500 text-center "
+            ></FontAwesome>
           </TouchableOpacity>
         </View>
       </View>
@@ -205,7 +209,7 @@ export default function TodoItem({
                     : task.priority === 2
                     ? "border-[#F44336]"
                     : "border-[#f2f2f2]"
-                }`}
+                } text-gray-400`}
               >
                 {task.description}
               </Text>
@@ -217,8 +221,8 @@ export default function TodoItem({
           <View className="flex items-center">
             <FontAwesome
               name={`caret-${!showDescription ? "up" : "down"}`}
-              size={30}
-              color={iconColor}
+              size={25}
+              color="#9ca3af"
               onPress={toggleDescription}
             />
           </View>
