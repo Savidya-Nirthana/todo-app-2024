@@ -120,6 +120,7 @@ const GetItems = ({
       setTasks([...tasks, newTask]);
     }
     resetForm();
+    swipeDownAndFadeOut(); // Close the form
   };
 
   const resetForm = () => {
