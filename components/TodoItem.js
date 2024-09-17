@@ -171,7 +171,7 @@ export default function TodoItem({
             <FontAwesome
               name="pencil-square-o"
               color="#b6b6b6"
-              size={30}
+              size={28}
               style={styles.editButtonText}
               className=" bg-[#0d0d43] text-blue-500 text-center py-[3px] rounded-[5px] mb-[10px] "
             ></FontAwesome>
@@ -186,7 +186,7 @@ export default function TodoItem({
             <FontAwesome
               name="trash"
               color="#b6b6b6"
-              size={30}
+              size={28}
               // style={styles.deleteButtonText}
               className=" bg-[#431c0d] text-orange-500 text-center "
             ></FontAwesome>

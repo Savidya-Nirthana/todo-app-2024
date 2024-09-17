@@ -167,10 +167,10 @@ const GetItems = ({
     >
       <View className="absolute z-10 right-5 -top-5">
         <TouchableOpacity
-          className=" bg-slate-800  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
+          className=" bg-slate-900  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#cdcdcd]"
           onPress={swipeDownAndFadeOut}
         >
-          <Text className="text-white text-[20px]">X</Text>
+          <Text className="text-[#cdcdcd] text-[20px]">X</Text>
         </TouchableOpacity>
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

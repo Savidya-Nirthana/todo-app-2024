@@ -82,7 +82,7 @@ export default function TodoList() {
 
         <View className=" flex flex-row justify-evenly py-[10px]">
           <Text
-            className="w-[110px] py-[10px] text-[#b6b6b6]  px-[2px]"
+            className="w-[110px] py-[5px] text-[#b6b6b6]  px-[2px]"
             onPress={toggleDrop}
           >
             Priority select{"  "}
@@ -153,7 +153,7 @@ export default function TodoList() {
             </Text>
           </Animated.View>
           <Text
-            className={` py-[10px] px-[15px] rounded-[17px] ${
+            className={`py-[6px] px-[15px] rounded-[10px] ${
               taskFilter === "a"
                 ? "bg-[#0c360c] text-[#1ba321]"
                 : "bg-[#3b3b3b] text-[#b6b6b6]"
@@ -165,7 +165,7 @@ export default function TodoList() {
             All
           </Text>
           <Text
-            className={` py-[10px] px-[15px] rounded-[17px] ${
+            className={`py-[6px] px-[15px] rounded-[10px] ${
               taskFilter === "u"
                 ? "bg-[#0c360c] text-[#1ba321]"
                 : "bg-[#3b3b3b] text-[#b6b6b6]"
@@ -177,7 +177,7 @@ export default function TodoList() {
             Undone
           </Text>
           <Text
-            className={` py-[10px] px-[15px] rounded-[17px] ${
+            className={`py-[6px] px-[15px] rounded-[10px] ${
               taskFilter === "d"
                 ? "bg-[#0c360c] text-[#1ba321]"
                 : "bg-[#3b3b3b] text-[#b6b6b6]"
