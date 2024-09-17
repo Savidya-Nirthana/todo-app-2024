@@ -8,6 +8,7 @@ module.exports = {
     "./components/TodoList.{js,jsx,ts,tsx}",
     "./components/TodoItem.{js,jsx,ts,tsx}",
     "./components/GetItems.{js,jsx,ts,tsx}",
+    "./components/Priorities.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {},
