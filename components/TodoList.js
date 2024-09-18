@@ -7,6 +7,8 @@ import {
   Animated,
   Easing,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -14,7 +16,7 @@ import TodoItem from "./TodoItem";
 import GetItems from "./GetItems";
 import TaskData from "./TaskData";
 
-export default function TodoList() {
+export default function TodoList({ searchText }) {
   const [showAdd, setShowAdd] = useState(false);
   const [tasks, setTasks] = useState(TaskData());
   const [taskFilter, setTaskFilter] = useState("a");
@@ -53,14 +55,32 @@ export default function TodoList() {
       )
     );
   }
+
+  const searchTasks = () => {
+    return sorting().filter((task) =>
+      task.text.toLowerCase().includes(searchText.toLowerCase())
+    );
+  };
+
+  const sorting = () => {
+    const notSelectedTasksSort = [...tasks]
+      .filter((task) => !task.completed)
+      .sort((a, b) => a.id - b.id);
+
+    const selectedTasksSort = [...tasks]
+      .filter((task) => task.completed)
+      .sort((a, b) => a.id - b.id);
+    return [...notSelectedTasksSort, ...selectedTasksSort];
+  };
+
   const pFilterTask =
     pFilter === null
-      ? tasks
+      ? searchTasks()
       : pFilter === "h"
-      ? tasks.filter((task) => task.priority === 2)
+      ? searchTasks().filter((task) => task.priority === 2)
       : pFilter === "m"
-      ? tasks.filter((task) => task.priority === 1)
-      : tasks.filter((task) => task.priority === 0);
+      ? searchTasks().filter((task) => task.priority === 1)
+      : searchTasks().filter((task) => task.priority === 0);
 
   const filterTasks =
     taskFilter === "a"
@@ -79,128 +99,132 @@ export default function TodoList() {
         <View className="w-[100%]">
           <View className="w-[90px] h-[3px]  bg-[#b6b6b6] relative top-[-10px] m-auto rounded-lg"></View>
         </View>
-
-        <View className=" flex flex-row justify-evenly py-[10px]">
-          <Text
-            className="w-[110px] py-[5px] text-[#b6b6b6]  px-[2px]"
-            onPress={toggleDrop}
-          >
-            Priority select{"  "}
-            <FontAwesome
-              name={`caret-${!showDrop ? "up" : "down"}`}
-              size={20}
-              color="#9ca3af"
-            ></FontAwesome>
-          </Text>
-          <Animated.View
-            style={{
-              height: dropdownHeight,
-              overflow: "hidden",
-            }}
-            className="z-10000 w-[110px] absolute top-[10px]"
-          >
+        <KeyboardAvoidingView
+          style={{ flex: 3 }}
+          behavior={Platform.OS === "ios" ? "padding" : "padding"}
+          keyboardVerticalOffset={0}
+        >
+          <View className=" flex flex-row justify-evenly py-[10px]">
+            <Animated.View
+              style={{
+                height: dropdownHeight,
+                overflow: "hidden",
+              }}
+              className="z-10000 w-[110px] absolute top-[40px] right-[20px]"
+            >
+              <Text
+                className={`py-[10px] px-[15px] ${
+                  pFilter === null
+                    ? "bg-[#0c360c] text-[#1ba321]"
+                    : "bg-[#212121] text-[#b6b6b6]"
+                }`}
+                onPress={() => {
+                  setPFilter(null);
+                  toggleDrop();
+                }}
+              >
+                All
+              </Text>
+              <Text
+                className={`py-[10px] px-[15px] ${
+                  pFilter === "h"
+                    ? "bg-[#0c360c] text-[#1ba321]"
+                    : "bg-[#212121] text-[#b6b6b6]"
+                }`}
+                onPress={() => {
+                  setPFilter("h");
+                  toggleDrop();
+                }}
+              >
+                High
+              </Text>
+              <Text
+                className={`py-[10px] px-[15px] ${
+                  pFilter === "m"
+                    ? "bg-[#0c360c] text-[#1ba321]"
+                    : "bg-[#212121] text-[#b6b6b6]"
+                }`}
+                onPress={() => {
+                  setPFilter("m");
+                  toggleDrop();
+                }}
+              >
+                Medium
+              </Text>
+              <Text
+                className={`py-[10px] px-[15px] ${
+                  pFilter === "l"
+                    ? "bg-[#0c360c] text-[#1ba321]"
+                    : "bg-[#212121] text-[#b6b6b6]"
+                }`}
+                onPress={() => {
+                  setPFilter("l");
+                  toggleDrop();
+                }}
+              >
+                Low
+              </Text>
+            </Animated.View>
             <Text
-              className={`py-[10px] px-[15px] ${
-                pFilter === null
+              className={`py-[6px] px-[15px] rounded-[10px] ${
+                taskFilter === "a"
                   ? "bg-[#0c360c] text-[#1ba321]"
-                  : "bg-[#212121] text-[#b6b6b6]"
+                  : "bg-[#3b3b3b] text-[#b6b6b6]"
               }`}
               onPress={() => {
-                setPFilter(null);
-                toggleDrop();
+                setTaskFilter("a");
               }}
             >
               All
             </Text>
             <Text
-              className={`py-[10px] px-[15px] ${
-                pFilter === "h"
+              className={`py-[6px] px-[15px] rounded-[10px] ${
+                taskFilter === "u"
                   ? "bg-[#0c360c] text-[#1ba321]"
-                  : "bg-[#212121] text-[#b6b6b6]"
+                  : "bg-[#3b3b3b] text-[#b6b6b6]"
               }`}
               onPress={() => {
-                setPFilter("h");
-                toggleDrop();
+                setTaskFilter("u");
               }}
             >
-              High
+              Undone
             </Text>
             <Text
-              className={`py-[10px] px-[15px] ${
-                pFilter === "m"
+              className={`py-[6px] px-[15px] rounded-[10px] ${
+                taskFilter === "d"
                   ? "bg-[#0c360c] text-[#1ba321]"
-                  : "bg-[#212121] text-[#b6b6b6]"
+                  : "bg-[#3b3b3b] text-[#b6b6b6]"
               }`}
               onPress={() => {
-                setPFilter("m");
-                toggleDrop();
+                setTaskFilter("d");
               }}
             >
-              Medium
+              Done
             </Text>
             <Text
-              className={`py-[10px] px-[15px] ${
-                pFilter === "l"
-                  ? "bg-[#0c360c] text-[#1ba321]"
-                  : "bg-[#212121] text-[#b6b6b6]"
-              }`}
-              onPress={() => {
-                setPFilter("l");
-                toggleDrop();
-              }}
+              className="w-[110px] py-[5px] text-[#b6b6b6]  px-[2px]"
+              onPress={toggleDrop}
             >
-              Low
+              Priority select{"  "}
+              <FontAwesome
+                name={`caret-${!showDrop ? "up" : "down"}`}
+                size={20}
+                color="#9ca3af"
+              ></FontAwesome>
             </Text>
-          </Animated.View>
-          <Text
-            className={`py-[6px] px-[15px] rounded-[10px] ${
-              taskFilter === "a"
-                ? "bg-[#0c360c] text-[#1ba321]"
-                : "bg-[#3b3b3b] text-[#b6b6b6]"
-            }`}
-            onPress={() => {
-              setTaskFilter("a");
-            }}
-          >
-            All
-          </Text>
-          <Text
-            className={`py-[6px] px-[15px] rounded-[10px] ${
-              taskFilter === "u"
-                ? "bg-[#0c360c] text-[#1ba321]"
-                : "bg-[#3b3b3b] text-[#b6b6b6]"
-            }`}
-            onPress={() => {
-              setTaskFilter("u");
-            }}
-          >
-            Undone
-          </Text>
-          <Text
-            className={`py-[6px] px-[15px] rounded-[10px] ${
-              taskFilter === "d"
-                ? "bg-[#0c360c] text-[#1ba321]"
-                : "bg-[#3b3b3b] text-[#b6b6b6]"
-            }`}
-            onPress={() => {
-              setTaskFilter("d");
-            }}
-          >
-            Done
-          </Text>
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false} className="-z-10">
-          {filterTasks.map((task) => (
-            <TodoItem
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              toggleCompleted={toggleCompleted}
-              editTask={editTask}
-            />
-          ))}
-        </ScrollView>
-
+          </View>
+          <ScrollView showsVerticalScrollIndicator={false} className="-z-10">
+            {filterTasks.map((task) => (
+              <TodoItem
+                key={task.id}
+                task={task}
+                deleteTask={deleteTask}
+                toggleCompleted={toggleCompleted}
+                editTask={editTask}
+              />
+            ))}
+          </ScrollView>
+        </KeyboardAvoidingView>
         {!showAdd && (
           <View className=" absolute top-[85%] left-[80%] z-100">
             <TouchableOpacity

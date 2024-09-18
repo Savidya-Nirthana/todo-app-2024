@@ -104,6 +104,7 @@ const GetItems = ({
             }
           : task
       );
+      sorting();
       setTasks(updateTasks);
       setETask(null);
     } else {
@@ -119,6 +120,7 @@ const GetItems = ({
       };
       setTasks([...tasks, newTask]);
     }
+    resetForm();
     setTitle("");
     setDescription("");
     setValue(false);
@@ -157,6 +159,14 @@ const GetItems = ({
     setShowTime(false);
     setTime(currentTime);
   };
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setDate(new Date());
+    setTime(new Date());
+    setSelectedCategory(null);
+    setSelectPriority(0);
+  };
   return (
     <Animated.View
       style={{
@@ -174,164 +184,157 @@ const GetItems = ({
         </TouchableOpacity>
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <ScrollView>
-            {/* <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View> */}
-            <Text className=" text-[#cdcdcd] text-center my-[10px] text-[20px] font-bold">
-              New Task To Do
+        <ScrollView>
+          {/* <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View> */}
+          <Text className=" text-[#cdcdcd] text-center my-[10px] text-[20px] font-bold">
+            New Task To Do
+          </Text>
+          <View>
+            <StyledTextInput
+              placeholder="Title Task"
+              className="bg-[#2c2c2c] p-1 rounded-md mb-[20px] placeholder:text-white"
+              placeholderTextColor="#9CA3AF"
+              style={{ textAlignVertical: "top" }}
+              value={eTask ? eTask.text : null}
+              onChangeText={(data) => {
+                setTitle(data);
+                eTask ? (eTask.text = data) : null;
+              }}
+            />
+          </View>
+          <View>
+            <StyledTextInput
+              multiline={true}
+              placeholder="Enter task details or any specific notes"
+              numberOfLines={5}
+              className="bg-[#2c2c2c]  rounded-md mb-[20px] p-2 placeholder:text-white"
+              placeholderTextColor="#9CA3AF"
+              value={eTask ? eTask.description : null}
+              style={{ textAlignVertical: "top" }}
+              onChangeText={(data) => {
+                setDescription(data);
+                eTask ? (eTask.description = data) : null;
+              }}
+            />
+          </View>
+          <View className="border-b-[0.5px] border-[#525252] mb-[20px]">
+            <Text className="text-[#cdcdcd] text-[20px] font-bold">
+              Category
             </Text>
+            <View className="flex flex-row flex-wrap">
+              {categoryList.map((cat, index) => (
+                <TouchableOpacity
+                  key={index}
+                  className={`m-[10px] p-[10px] rounded-lg ${
+                    selectedCategory === cat ? "bg-slate-500" : "bg-[#2c2c2c]"
+                  }`}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setSelectedCategory(cat);
+                  }}
+                >
+                  <Text className="text-white">{cat}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <View className="flex flex-row gap-5 mb-[20px]">
             <View>
-              <StyledTextInput
-                placeholder="Title Task"
-                className="bg-[#2c2c2c] p-1 rounded-md mb-[20px] placeholder:text-white"
-                placeholderTextColor="#9CA3AF"
-                style={{ textAlignVertical: "top" }}
-                value={eTask ? eTask.text : null}
-                onChangeText={(data) => {
-                  setTitle(data);
-                  eTask ? (eTask.text = data) : null;
-                }}
-              />
-            </View>
-            <View>
-              <StyledTextInput
-                multiline={true}
-                placeholder="Enter task details or any specific notes"
-                numberOfLines={5}
-                className="bg-[#2c2c2c]  rounded-md mb-[20px] p-2 placeholder:text-white"
-                placeholderTextColor="#9CA3AF"
-                value={eTask ? eTask.description : null}
-                style={{ textAlignVertical: "top" }}
-                onChangeText={(data) => {
-                  setDescription(data);
-                  eTask ? (eTask.description = data) : null;
-                }}
-              />
-            </View>
-            <View className="border-b-[0.5px] border-[#525252] mb-[20px]">
-              <Text className="text-[#cdcdcd] text-[20px] font-bold">
-                Category
-              </Text>
-              <View className="flex flex-row flex-wrap">
-                {categoryList.map((cat, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    className={`m-[10px] p-[10px] rounded-lg ${
-                      selectedCategory === cat ? "bg-slate-500" : "bg-[#2c2c2c]"
-                    }`}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      setSelectedCategory(cat);
-                    }}
-                  >
-                    <Text className="text-white">{cat}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            <View className="flex flex-row gap-5 mb-[20px]">
-              <View>
-                <TouchableOpacity
-                  className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
-                  onPress={() => {
-                    setShowDate(true);
-                  }}
-                >
-                  <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
-                    {dateFromat(date)}
-                  </Text>
-                </TouchableOpacity>
-
-                {showDate && (
-                  <DateTimePicker
-                    display="default"
-                    onChange={onChange}
-                    mode="date"
-                    value={date}
-                  />
-                )}
-                <Text className=" text-center text-white text-[10px] my-[5px]">
-                  PICK DATE
-                </Text>
-              </View>
-
-              <View>
-                <TouchableOpacity
-                  className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
-                  onPress={() => {
-                    setShowTime(true);
-                  }}
-                >
-                  <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
-                    {timeFormat(time)}
-                  </Text>
-                </TouchableOpacity>
-                {showTime && (
-                  <DateTimePicker
-                    mode="time"
-                    onChange={onChangeTime}
-                    value={time}
-                  />
-                )}
-                <Text className=" text-center text-white text-[10px] my-[5px]">
-                  PICK TIME
-                </Text>
-              </View>
-            </View>
-            {/* {eTask ? setSelectPriority(eTask.priority) : setSelectPriority(0)} */}
-            <View className="border-t-[0.5px] border-[#525252] py-[20px]">
-              <Text className=" text-[#cdcdcd] text-[20px] font-bold">
-                Priority
-              </Text>
-              <View className="flex flex-row justify-around">
-                <TouchableOpacity
-                  className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#4CAF50]`}
-                  onPress={() => {
-                    setSelectPriority(0);
-                  }}
-                >
-                  <Text className="text-white ">Low</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#FFC107] "
-                  onPress={() => {
-                    setSelectPriority(1);
-                  }}
-                >
-                  <Text className="text-white">Medium</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#F44336] "
-                  onPress={() => {
-                    setSelectPriority(2);
-                  }}
-                >
-                  <Text className="text-white">High</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View className="flex items-center justify-center align-baseline mb-[10px]">
               <TouchableOpacity
-                className={`bg-[#f2f2f2] w-[60px] h-[60px] flex align-baseline justify-center items-center rounded-full ${
-                  selectPriority === 0
-                    ? "bg-[#4CAF50] text-white font-bold"
-                    : selectPriority === 1
-                    ? "bg-[#FFC107] text-white font-bold"
-                    : selectPriority === 2
-                    ? "bg-[#F44336] text-white font-bold"
-                    : "bg-[#f2f2f2]"
-                }`}
-                onPress={addTask}
+                className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
+                onPress={() => {
+                  setShowDate(true);
+                }}
               >
-                <Text className="text-[40px] text-white">+</Text>
+                <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
+                  {dateFromat(date)}
+                </Text>
+              </TouchableOpacity>
+
+              {showDate && (
+                <DateTimePicker
+                  display="default"
+                  onChange={onChange}
+                  mode="date"
+                  value={date}
+                />
+              )}
+              <Text className=" text-center text-white text-[10px] my-[5px]">
+                PICK DATE
+              </Text>
+            </View>
+
+            <View>
+              <TouchableOpacity
+                className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
+                onPress={() => {
+                  setShowTime(true);
+                }}
+              >
+                <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
+                  {timeFormat(time)}
+                </Text>
+              </TouchableOpacity>
+              {showTime && (
+                <DateTimePicker
+                  mode="time"
+                  onChange={onChangeTime}
+                  value={time}
+                />
+              )}
+              <Text className=" text-center text-white text-[10px] my-[5px]">
+                PICK TIME
+              </Text>
+            </View>
+          </View>
+          {/* {eTask ? setSelectPriority(eTask.priority) : setSelectPriority(0)} */}
+          <View className="border-t-[0.5px] border-[#525252] py-[20px]">
+            <Text className=" text-[#cdcdcd] text-[20px] font-bold">
+              Priority
+            </Text>
+            <View className="flex flex-row justify-around">
+              <TouchableOpacity
+                className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#4CAF50]`}
+                onPress={() => {
+                  setSelectPriority(0);
+                }}
+              >
+                <Text className="text-white ">Low</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#FFC107] "
+                onPress={() => {
+                  setSelectPriority(1);
+                }}
+              >
+                <Text className="text-white">Medium</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#F44336] "
+                onPress={() => {
+                  setSelectPriority(2);
+                }}
+              >
+                <Text className="text-white">High</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </View>
+          <View className="flex flex-row justify-around mb-[10px]">
+            <TouchableOpacity
+              className="bg-[#343333] w-[50px] h-[50px] flex align-baseline justify-center items-center rounded-full"
+              onPress={resetForm}
+            >
+              <Text className="text-[15px] text-white">Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="bg-[#343333] w-[50px] h-[50px] flex align-baseline justify-center items-center rounded-full"
+              onPress={addTask}
+            >
+              <Text className="text-[35px] text-white ">+</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </Animated.View>
   );
