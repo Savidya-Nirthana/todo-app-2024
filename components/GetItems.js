@@ -40,10 +40,10 @@ const GetItems = ({
 
   const categoryList = [
     "Work",
-    "Education",
-    "Family",
     "Entertainment",
-    "Cooking",
+    "Family",
+    "Education",
+    "Personal",
     "Friends",
   ];
 
@@ -101,7 +101,7 @@ const GetItems = ({
               time: time,
               priority: selectPriority,
               category: selectedCategory,
-            }
+          }
           : task
       );
       setTasks(updateTasks);
@@ -119,10 +119,19 @@ const GetItems = ({
       };
       setTasks([...tasks, newTask]);
     }
+    resetForm();
+    swipeDownAndFadeOut(); // Close the form
+  };
+
+  const resetForm = () => {
     setTitle("");
     setDescription("");
-    setValue(false);
+    setDate(new Date());
+    setTime(new Date());
+    setSelectedCategory(null);
+    setSelectPriority(0);
   };
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDate(false);
@@ -137,19 +146,12 @@ const GetItems = ({
   };
 
   const timeFormat = (date) => {
-    const hours = String(date.getHours()).padStart(2, "0");
+    let hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-
-    return `${hours}:${minutes}:${seconds}`;
-  };
-
-  const toggleComplete = () => {
-    if (urgent) {
-      setUrgent(false);
-    } else {
-      setUrgent(true);
-    }
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 should be 12 in 12-hour format
+    return `${hours}:${minutes} ${ampm}`;
   };
 
   const onChangeTime = (event, selectedTime) => {
@@ -157,20 +159,21 @@ const GetItems = ({
     setShowTime(false);
     setTime(currentTime);
   };
+
   return (
     <Animated.View
       style={{
         transform: [{ translateY: translateYAnim }],
         opacity: opacityAnim,
       }}
-      className=" bg-[#230f5b]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
+      className=" bg-[#230f5b]  rounded-t-3xl px-[20px] absolute top-20 bottom-0 w-[100%]"
     >
       <View className="absolute z-10 right-5 -top-5">
         <TouchableOpacity
-          className=" bg-[#230f5b]  w-[50px] h-[50px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
+          className=" bg-[#230f5b]  w-[40px] h-[40px] rounded-full text-center flex items-center justify-center border-[2px] border-[#f2f2f2]"
           onPress={swipeDownAndFadeOut}
         >
-          <Text className="text-white text-[20px]">X</Text>
+          <Text className="text-white text-[15px]">X</Text>
         </TouchableOpacity>
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -179,51 +182,45 @@ const GetItems = ({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView>
-            <View className=" w-[70px] h-[2px] bg-[#bbbbbb] m-auto mt-2 -mb-2"></View>
-            <Text className=" text-[#cdcdcd] text-center my-[10px] text-[20px] font-bold">
+            <View className="w-[70px] h-[2px] bg-[#bbbbb] m-auto mt-2 -mb-2"></View>
+            <Text className="text-[#ffffff] text-center my-[10px] text-[20px] font-bold">
               New Task To Do
             </Text>
             <View>
               <StyledTextInput
                 placeholder="Title Task"
-                className="bg-[#2b2766] p-1 rounded-md mb-[20px] placeholder:text-white"
+                className="bg-[#2b2766] p-0.1 rounded-md mb-[18px] placeholder:text-white"
                 placeholderTextColor="#9CA3AF"
                 style={{ textAlignVertical: "top" }}
-                value={eTask ? eTask.text : null}
-                onChangeText={(data) => {
-                  setTitle(data);
-                  eTask ? (eTask.text = data) : null;
-                }}
+                value={title}
+                onChangeText={(data) => setTitle(data)}
               />
             </View>
+            
             <View>
+              
               <StyledTextInput
                 multiline={true}
                 placeholder="Enter task details or any specific notes"
                 numberOfLines={5}
-                className="bg-[#2b2766]  rounded-md mb-[20px] p-2 placeholder:text-white"
+                className="bg-[#2b2766]  p-0.1 rounded-md mb-[2px] p-2 placeholder:text-white"
                 placeholderTextColor="#9CA3AF"
                 value={eTask ? eTask.description : null}
                 style={{ textAlignVertical: "top" }}
-                onChangeText={(data) => {
-                  setDescription(data);
-                  eTask ? (eTask.description = data) : null;
-                }}
+                onChangeText={(data) => setDescription(data)}
               />
             </View>
             <View className="border-b-[0.5px] border-[#ffffff] mb-[20px]">
-              <Text className="text-white text-[20px] font-bold">Category</Text>
+              <Text className="text-white text-[20px] top-1 font-bold">Category</Text>
               <View className="flex flex-row flex-wrap">
                 {categoryList.map((cat, index) => (
                   <TouchableOpacity
                     key={index}
-                    className={`m-[10px] p-[10px] rounded-lg ${
+                    className={`m-[7px] p-[9px] pt-[6px] rounded-lg ${
                       selectedCategory === cat ? "bg-blue-500" : "bg-slate-500"
                     }`}
                     activeOpacity={0.7}
-                    onPress={() => {
-                      setSelectedCategory(cat);
-                    }}
+                    onPress={() => setSelectedCategory(cat)}
                   >
                     <Text className="text-white">{cat}</Text>
                   </TouchableOpacity>
@@ -231,19 +228,16 @@ const GetItems = ({
               </View>
             </View>
 
-            <View className="flex flex-row gap-5 mb-[20px]">
+            <View className="flex flex-row ml-[10px] gap-10 mb-[20px]">
               <View>
                 <TouchableOpacity
-                  className=" bg-[#522c9d] rounded-lg"
-                  onPress={() => {
-                    setShowDate(true);
-                  }}
+                  className="bg-[#522c9d] rounded-lg"
+                  onPress={() => setShowDate(true)}
                 >
                   <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
                     {dateFromat(date)}
                   </Text>
                 </TouchableOpacity>
-
                 {showDate && (
                   <DateTimePicker
                     display="default"
@@ -252,19 +246,16 @@ const GetItems = ({
                     value={date}
                   />
                 )}
-                <Text className=" text-center text-white text-[10px] my-[5px]">
+                <Text className=" text-center text-white text-[10px] my-[6px]">
                   PICK DATE
                 </Text>
               </View>
-
               <View>
                 <TouchableOpacity
-                  className=" bg-[#1c1c1c] rounded-lg"
-                  onPress={() => {
-                    setShowTime(true);
-                  }}
+                  className="bg-[#522c9d] rounded-lg"
+                  onPress={() => setShowTime(true)}
                 >
-                  <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
+                  <Text className="text-center py-[10px] px-[25px] text-[#ffffff]">
                     {timeFormat(time)}
                   </Text>
                 </TouchableOpacity>
@@ -275,57 +266,52 @@ const GetItems = ({
                     value={time}
                   />
                 )}
-                <Text className=" text-center text-white text-[10px] my-[5px]">
+                <Text className="text-center text-white text-[11px] my-[5px]">
                   PICK TIME
                 </Text>
               </View>
             </View>
-            {/* {eTask ? setSelectPriority(eTask.priority) : setSelectPriority(0)} */}
             <View className="border-t-[0.5px] border-[#ffffff] py-[20px]">
-              <Text className=" text-white text-[20px] font-bold">
-                Priority
-              </Text>
+              <Text className="text-white text-[20px] font-bold">Priority</Text>
               <View className="flex flex-row justify-around">
                 <TouchableOpacity
-                  className={`m-[10px] p-[10px] rounded-lg bg-[#4CAF50]`}
-                  onPress={() => {
-                    setSelectPriority(0);
-                  }}
+                  className={`m-[10px] p-[10px] rounded-lg ${
+                    selectPriority === 0 ? "bg-[#4CAF50]" : "bg-[#7d7dbe]"
+                  }`}
+                  onPress={() => setSelectPriority(0)}
                 >
-                  <Text className="text-white ">Low</Text>
+                  <Text className="text-white">Low</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg bg-[#FFC107] "
-                  onPress={() => {
-                    setSelectPriority(1);
-                  }}
+                  className={`m-[10px] p-[10px] rounded-lg ${
+                    selectPriority === 1 ? "bg-[#FFC107]" : "bg-[#7d7dbe]"
+                  }`}
+                  onPress={() => setSelectPriority(1)}
                 >
                   <Text className="text-white">Medium</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="m-[10px] p-[10px] rounded-lg bg-[#F44336] "
-                  onPress={() => {
-                    setSelectPriority(2);
-                  }}
+                  className={`m-[10px] p-[10px] rounded-lg ${
+                    selectPriority === 2 ? "bg-[#F44336]" : "bg-[#7d7dbe]"
+                  }`}
+                  onPress={() => setSelectPriority(2)}
                 >
                   <Text className="text-white">High</Text>
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="flex items-center justify-center align-baseline mb-[10px]">
+            <View className="flex flex-row justify-around mb-[10px]">
               <TouchableOpacity
-                className={`bg-[#f2f2f2] w-[60px] h-[60px] flex align-baseline justify-center items-center rounded-full ${
-                  selectPriority === 0
-                    ? "bg-[#4CAF50] text-white font-bold"
-                    : selectPriority === 1
-                    ? "bg-[#FFC107] text-white font-bold"
-                    : selectPriority === 2
-                    ? "bg-[#F44336] text-white font-bold"
-                    : "bg-[#f2f2f2]"
-                }`}
+                className="bg-[#343333] w-[50px] h-[50px] flex align-baseline justify-center items-center rounded-full"
+                onPress={resetForm}
+              >
+                <Text className="text-[15px] text-white">Reset</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="bg-[#343333] w-[50px] h-[50px] flex align-baseline justify-center items-center rounded-full"
                 onPress={addTask}
               >
-                <Text className="text-[40px] text-white">+</Text>
+                <Text className="text-[35px] text-white ">+</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

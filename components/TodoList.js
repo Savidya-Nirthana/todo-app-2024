@@ -52,12 +52,12 @@ export default function TodoList() {
 
   return (
     <>
-      <View className=" p-5 bg-[#f2f2f2] z-10 relative -top-[85%] h-[85%] rounded-3xl">
+      <View className=" p-5 bg-[#e1fde6] z-10 relative -top-[85%] h-[85%] rounded-3xl">
         <View className="w-[100%]">
-          <View className="w-[50px] h-[3px]  bg-[#f2f2f2] relative top-[-30px] m-auto rounded-lg"></View>
+          <View className="w-[50px] h-[3px]  bg-[#e1fde6] relative top-[-30px] m-auto rounded-lg"></View>
         </View>
 
-        <View className=" flex flex-row justify-evenly pb-[20px]">
+        <View className=" flex flex-row justify-evenly pb-[10px]">
           <Text
             className={` py-[10px] px-[15px] rounded-[17px] ${
               taskFilter === "a"

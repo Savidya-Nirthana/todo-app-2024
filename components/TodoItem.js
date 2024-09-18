@@ -22,20 +22,21 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    shadowColor: "#000",
+    //borderWidth: 1,
+    //borderColor: "#20b182",
+    shadowColor: "#20b182",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOpacity: 50,
+    shadowRadius: 20,
+    elevation: 5,
   },
   priorityLine: {
-    width: 13, // Width of the priority line
+    width: 4, // Width of the priority line
     height: "100%",
     marginRight: 10,
-    marginLeft: 1, // Space between line and checkbox
-    borderBottomLeftRadius: 10,
+    marginTop:1,
+   // marginLeft: 1, // Space between line and checkbox
+    borderBottomLeftRadius: 30,
     // borderTopLeftRadius: 15,
   },
   checkboxContainer: {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "left",
   },
   editButton: {
-    backgroundColor: "#00BFFF",
+    backgroundColor: "#33cca6",
     paddingVertical: 3,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   deleteButton: {
-    backgroundColor: "#FF6347",
+    backgroundColor: "#cc6666",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -142,11 +143,11 @@ export default function TodoItem({
           style={styles.priorityLine}
           className={`${
             task.priority === 0
-              ? "bg-[#4CAF50]"
+              ? "bg-[#66ccb3]"
               : task.priority === 1
-              ? "bg-[#FFC107]"
+              ? "bg-[#cccc66]"
               : task.priority === 2
-              ? "bg-[#F44336]"
+              ? "bg-[#ff8080]"
               : "bg-[#f2f2f2]"
           }`}
         ></View>

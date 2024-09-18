@@ -39,13 +39,13 @@ const DateTime = () => {
   };
 
   return (
-    <View className={` bg-[#2a2b2a] h-[100%] z-[-1] pt-[35px] pl-[20px]`}>
+    <View className={` bg-[#ffffff] h-[100%] z-[-1] pt-[35px] pl-[20px]`}>
       <View className="">
-        <Text className={`text-white text-[25px]`}>
+        <Text className={`text-[#0a4455] text-[30px]`}>
           {currentHour(new Date().getHours())}
         </Text>
         <Text
-          className={`text-white`}
+          className={`text-black`}
         >{`${currentDateTime[0]}, ${currentDateTime[1]}`}</Text>
       </View>
     </View>
