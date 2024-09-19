@@ -31,6 +31,8 @@ const GetItems = ({
   const [time, setTime] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
   const [showTime, setShowTime] = useState(false);
+  const [dateChange, setDateChange] = useState(false);
+  const [timeChange, setTimeChange] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(
     eTask ? eTask.category : null
   );
@@ -95,16 +97,15 @@ const GetItems = ({
         task.id === eTask.id
           ? {
               ...task,
-              text: title,
-              description: description,
-              date: date,
-              time: time,
-              priority: selectPriority,
-              category: selectedCategory,
+              text: title ? title : eTask.text,
+              description: description ? description : eTask.description,
+              date: dateChange ? date : eTask.date,
+              time: timeChange ? time : eTask.time,
+              priority: selectPriority ? selectPriority : eTask.priority,
+              category: selectedCategory ? selectedCategory : eTask.category,
             }
           : task
       );
-      sorting();
       setTasks(updateTasks);
       setETask(null);
     } else {
@@ -124,6 +125,8 @@ const GetItems = ({
     setTitle("");
     setDescription("");
     setValue(false);
+    setTimeChange(false);
+    setDateChange(false);
   };
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -245,6 +248,7 @@ const GetItems = ({
                 className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
                 onPress={() => {
                   setShowDate(true);
+                  setDateChange(true);
                 }}
               >
                 <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
@@ -270,6 +274,7 @@ const GetItems = ({
                 className=" bg-[#1c1c1c] rounded-lg border-slate-700 border-[1px]"
                 onPress={() => {
                   setShowTime(true);
+                  setTimeChange(true);
                 }}
               >
                 <Text className="text-center py-[10px] px-[20px] text-[#ffffff]">
@@ -295,7 +300,9 @@ const GetItems = ({
             </Text>
             <View className="flex flex-row justify-around">
               <TouchableOpacity
-                className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#4CAF50]`}
+                className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#4CAF50] ${
+                  selectPriority === 0 ? "bg-[#4CAF50]" : null
+                }`}
                 onPress={() => {
                   setSelectPriority(0);
                 }}
@@ -303,7 +310,9 @@ const GetItems = ({
                 <Text className="text-white ">Low</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#FFC107] "
+                className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#FFC107] ${
+                  selectPriority === 1 ? " bg-[#FFC107]" : null
+                } `}
                 onPress={() => {
                   setSelectPriority(1);
                 }}
@@ -311,7 +320,9 @@ const GetItems = ({
                 <Text className="text-white">Medium</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                className="m-[10px] p-[10px] rounded-lg border-[1px] border-[#F44336] "
+                className={`m-[10px] p-[10px] rounded-lg border-[1px] border-[#F44336] ${
+                  selectPriority === 2 ? " bg-[#F44336]" : null
+                }`}
                 onPress={() => {
                   setSelectPriority(2);
                 }}
