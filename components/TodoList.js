@@ -16,7 +16,12 @@ import TodoItem from "./TodoItem";
 import GetItems from "./GetItems";
 import TaskData from "./TaskData";
 
-export default function TodoList({ searchText, showSearch, showAll, setShowAll }) {
+export default function TodoList({
+  searchText,
+  showSearch,
+  showAll,
+  setShowAll,
+}) {
   const [showAdd, setShowAdd] = useState(false);
   const [tasks, setTasks] = useState(TaskData());
   const [taskFilter, setTaskFilter] = useState("a");
@@ -24,7 +29,6 @@ export default function TodoList({ searchText, showSearch, showAll, setShowAll }
   const [pFilter, setPFilter] = useState(null);
   const [showDrop, setShowDrop] = useState(false);
   const dropdownHeight = useRef(new Animated.Value(0)).current;
-  
 
   useEffect(() => {
     Animated.timing(dropdownHeight, {
@@ -37,8 +41,6 @@ export default function TodoList({ searchText, showSearch, showAll, setShowAll }
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
-
-
 
   function editTask(id) {
     const selectedTask = tasks.filter((task) => task.id === id)[0];
@@ -262,7 +264,7 @@ export default function TodoList({ searchText, showSearch, showAll, setShowAll }
               </>
             ) : null}
             <Text className=" text-[#b6b6b6] text-[20px]">All Tasks</Text>
-            {showSearch && TaskToShow.map((task) => (
+            {TaskToShow.map((task) => (
               <TodoItem
                 key={task.id}
                 task={task}
