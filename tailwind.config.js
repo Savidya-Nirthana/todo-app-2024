@@ -9,6 +9,7 @@ module.exports = {
     "./components/TodoItem.{js,jsx,ts,tsx}",
     "./components/GetItems.{js,jsx,ts,tsx}",
     "./components/Priorities.{js,jsx,ts,tsx}",
+    "./components/SearchBar.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {},

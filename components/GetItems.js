@@ -176,7 +176,7 @@ const GetItems = ({
         transform: [{ translateY: translateYAnim }],
         opacity: opacityAnim,
       }}
-      className=" bg-[#181818]  rounded-t-3xl px-[20px] absolute bottom-0 w-[100%]"
+      className=" bg-[#181818]  rounded-t-3xl px-[20px] absolute  w-[100%]"
     >
       <View className="absolute z-10 right-5 -top-5">
         <TouchableOpacity

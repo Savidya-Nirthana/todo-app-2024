@@ -1,13 +1,16 @@
 import react, { useEffect, useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import SearchBar from "./SearchBar";
 
-const DateTime = ({ setSearchText }) => {
+const DateTime = ({ setSearchText, showSearch, setShowSearch, showAll, setShowAll}) => {
   const [currentDateTime, setCurrentDateTime] = useState([]);
-  const [showSearch, setShowSearch] = useState(false);
+  
+  
 
   const toggleSearch = () => {
     setShowSearch(!showSearch);
+    setShowAll(!showAll)
   };
   useEffect(() => {
     const updateDateTime = () => {
@@ -38,7 +41,7 @@ const DateTime = ({ setSearchText }) => {
   };
 
   return (
-    <View className={` bg-[#151515] h-full z-[-1] pt-[35px] `}>
+    <View className={` bg-[#151515] h-[15%]  pt-[35px] `}>
       {!showSearch && (
         <View className="flex flex-row pl-[20px] justify-between ">
           <View className="">
@@ -49,7 +52,7 @@ const DateTime = ({ setSearchText }) => {
               className={`text-white`}
             >{`${currentDateTime[0]}, ${currentDateTime[1]}`}</Text>
           </View>
-          <View className="mr-[20px] mt-[10px]">
+          <View className="mr-[20px] pt-[10px]">
             <FontAwesome
               name="search"
               color="#9ca3af"
@@ -61,30 +64,12 @@ const DateTime = ({ setSearchText }) => {
           </View>
         </View>
       )}
-
-      {showSearch && (
-        <View className="relative top-0 w-full ">
-          <View className="absolute z-10 left-[5%] ml-[8px] mt-[15px]">
-            <FontAwesome
-              name="arrow-left"
-              color="#9ca3af"
-              size={25}
-              onPress={() => {
-                toggleSearch();
-              }}
-            />
-          </View>
-
-          <TextInput
-            placeholder="Search..."
-            className="h-[55px] bg-[#232323]  w-[90%] m-auto rounded-[20px] pl-[45px]  text-[16px] placeholder:text-[#9ca3af]"
-            placeholderTextColor="#9CA3AF"
-            onChangeText={(text) => {
-              setSearchText(text);
-            }}
-          />
-        </View>
-      )}
+      <SearchBar
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+        toggleSearch={toggleSearch}
+        setSearchText={setSearchText}
+      />
     </View>
   );
 };

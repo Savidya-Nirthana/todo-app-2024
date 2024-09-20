@@ -16,7 +16,7 @@ import TodoItem from "./TodoItem";
 import GetItems from "./GetItems";
 import TaskData from "./TaskData";
 
-export default function TodoList({ searchText }) {
+export default function TodoList({ searchText, showSearch, showAll, setShowAll }) {
   const [showAdd, setShowAdd] = useState(false);
   const [tasks, setTasks] = useState(TaskData());
   const [taskFilter, setTaskFilter] = useState("a");
@@ -24,6 +24,8 @@ export default function TodoList({ searchText }) {
   const [pFilter, setPFilter] = useState(null);
   const [showDrop, setShowDrop] = useState(false);
   const dropdownHeight = useRef(new Animated.Value(0)).current;
+  
+
   useEffect(() => {
     Animated.timing(dropdownHeight, {
       toValue: showDrop ? 160 : 0,
@@ -35,6 +37,8 @@ export default function TodoList({ searchText }) {
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
+
+
 
   function editTask(id) {
     const selectedTask = tasks.filter((task) => task.id === id)[0];
@@ -89,28 +93,40 @@ export default function TodoList({ searchText }) {
       ? pFilterTask.filter((task) => !task.completed)
       : pFilterTask.filter((task) => task.completed);
 
+  const TaskToShow = showAll ? filterTasks : filterTasks.slice(0, 4);
+  const today = new Date();
+  const todayTasks = tasks.filter(
+    (task) =>
+      task.date.getFullYear() === today.getFullYear() &&
+      task.date.getMonth() === today.getMonth() &&
+      task.date.getDate() === today.getDate()
+  );
   const toggleDrop = () => {
     setShowDrop(!showDrop);
   };
+  const categoryList = [
+    "Work",
+    "Education",
+    "Family",
+    "Entertainment",
+    "Cooking",
+    "Friends",
+  ];
 
   return (
-    <>
-      <View className=" px-2 bg-[#181818] z-10 relative -top-[85%] h-[85%] rounded-3xl">
-        <View className="w-[100%]">
-          <View className="w-[90px] h-[3px]  bg-[#b6b6b6] relative top-[-10px] m-auto rounded-lg"></View>
-        </View>
-        <KeyboardAvoidingView
-          style={{ flex: 3 }}
-          behavior={Platform.OS === "ios" ? "padding" : "padding"}
-          keyboardVerticalOffset={0}
-        >
+    <View className="h-[72%] bg-[#181818]">
+      <View>
+        <View className=" px-2 bg-[#181818] ">
+          <View className="w-[100%]">
+            <View className="w-[90px] h-[3px]  bg-[#b6b6b6] relative top-[-10px] m-auto rounded-lg"></View>
+          </View>
           <View className=" flex flex-row justify-evenly py-[10px]">
             <Animated.View
               style={{
                 height: dropdownHeight,
                 overflow: "hidden",
               }}
-              className="z-10000 w-[110px] absolute top-[40px] right-[20px]"
+              className=" w-[110px] absolute top-[40px] right-[20px]"
             >
               <Text
                 className={`py-[10px] px-[15px] ${
@@ -213,8 +229,40 @@ export default function TodoList({ searchText }) {
               ></FontAwesome>
             </Text>
           </View>
-          <ScrollView showsVerticalScrollIndicator={false} className="-z-10">
-            {filterTasks.map((task) => (
+          {!showAdd && (
+            <View className="absolute top-[80%] z-[1] right-[10%]">
+              <TouchableOpacity
+                className="bg-[#136439] w-[50px] h-[50px] rounded-lg flex items-center justify-center"
+                onPress={() => {
+                  setShowAdd(true);
+                }}
+              >
+                <Text className="text-white text-[30px]">+</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <ScrollView>
+            {!showSearch ? (
+              <>
+                <Text className=" text-[#b6b6b6] text-[20px]">Today</Text>
+                {todayTasks.map((task) => (
+                  <TodoItem
+                    key={task.id}
+                    task={task}
+                    deleteTask={deleteTask}
+                    toggleCompleted={toggleCompleted}
+                    editTask={editTask}
+                  />
+                ))}
+                {todayTasks.length === 0 ? (
+                  <View className="flex items-center justify-center w-full h-[70px]">
+                    <Text className="text-[#b6b6b6]">No task to view</Text>
+                  </View>
+                ) : null}
+              </>
+            ) : null}
+            <Text className=" text-[#b6b6b6] text-[20px]">All Tasks</Text>
+            {showSearch && TaskToShow.map((task) => (
               <TodoItem
                 key={task.id}
                 task={task}
@@ -223,32 +271,56 @@ export default function TodoList({ searchText }) {
                 editTask={editTask}
               />
             ))}
+            {filterTasks.length > 4 && (
+              <View className="flex items-center justify-center mt-4">
+                <TouchableOpacity
+                  className="bg-[#181818] p-1 rounded w-[100px] flex flex-row gap-2 "
+                  onPress={() => setShowAll(!showAll)}
+                >
+                  <Text className="text-white text-center  text-[16px]">
+                    {showAll ? "See Less" : "See More"}
+                  </Text>
+                  <FontAwesome
+                    name={`caret-${!showAll ? "up" : "down"}`}
+                    size={20}
+                    color="#9ca3af"
+                  ></FontAwesome>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {categoryList.map((cat) => {
+              const catTasks = tasks.filter((task) => task.category === cat);
+
+              return (
+                <View key={cat}>
+                  <Text className="text-[#b6b6b6] text-[20px]">{cat}</Text>
+                  {catTasks.map((task) => (
+                    <TodoItem
+                      key={task.id}
+                      task={task}
+                      deleteTask={deleteTask}
+                      toggleCompleted={toggleCompleted}
+                      editTask={editTask}
+                    />
+                  ))}
+                </View>
+              );
+            })}
           </ScrollView>
-        </KeyboardAvoidingView>
-        {!showAdd && (
-          <View className=" absolute top-[85%] left-[80%] z-100">
-            <TouchableOpacity
-              className="bg-[#136439] w-[50px] h-[50px] rounded-lg flex items-center justify-center"
-              onPress={() => {
-                setShowAdd(true);
-              }}
-            >
-              <Text className="text-white text-[30px]">+</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        {showAdd && (
+          <GetItems
+            value={showAdd}
+            setValue={setShowAdd}
+            tasks={tasks}
+            setTasks={setTasks}
+            eTask={eTask}
+            setETask={setETask}
+            deleteTask={deleteTask}
+          />
         )}
       </View>
-      {showAdd && (
-        <GetItems
-          value={showAdd}
-          setValue={setShowAdd}
-          tasks={tasks}
-          setTasks={setTasks}
-          eTask={eTask}
-          setETask={setETask}
-          deleteTask={deleteTask}
-        />
-      )}
-    </>
+    </View>
   );
 }
