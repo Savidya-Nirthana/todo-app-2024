@@ -127,7 +127,7 @@ export default function TodoItem({
   });
 
   return (
-    <View style={styles.todoItemContainer} className=" z-[-1]">
+    <View style={styles.todoItemContainer} className=" -z-[100]">
       <View style={styles.todoItem}>
         <View
           // style={styles.priorityLine}

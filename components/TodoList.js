@@ -122,7 +122,7 @@ export default function TodoList({
           <View className="w-[100%]">
             <View className="w-[90px] h-[3px]  bg-[#b6b6b6] relative top-[-10px] m-auto rounded-lg"></View>
           </View>
-          <View className=" flex flex-row justify-evenly py-[10px]">
+          <View className=" flex flex-row justify-evenly py-[10px] z-[1000]">
             <Animated.View
               style={{
                 height: dropdownHeight,
@@ -232,7 +232,7 @@ export default function TodoList({
             </Text>
           </View>
           {!showAdd && (
-            <View className="absolute top-[80%] z-[1] right-[10%]">
+            <View className="absolute top-[80%] z-[100] right-[10%]">
               <TouchableOpacity
                 className="bg-[#136439] w-[50px] h-[50px] rounded-lg flex items-center justify-center"
                 onPress={() => {
